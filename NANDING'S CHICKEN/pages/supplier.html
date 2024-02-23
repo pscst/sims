@@ -1,0 +1,494 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/system.css">
+	<link rel="stylesheet" href="../css/datatables.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    
+    <script src="https://kit.fontawesome.com/6b1ea01380.js" crossorigin="anonymous"></script>
+
+
+
+	
+	<title>Supplier |<!-- <?php echo $row['system_title']; ?>--></title>
+</head>
+<body>
+    
+	
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="../pages/dashboard.html" class="logo"> 
+		<img src='../img/logo/logo.png' alt=''>  
+
+		<h4>Sales and Inventory Management System</h4></a>
+		<ul class="side-menu">
+			<li class="divider" data-text="home">HOME</li>
+			<li><a href="../pages/dashboard.html" ><i class='bx bxs-dashboard icon' ></i><div class="sideMenuText">Dashboard</div></a></li>
+			<li class="divider" data-text="main">Main</li>
+			<li>
+				<a href="../pages/customer.html" ><i class='bx bxs-face icon'></i><div class="sideMenuText">Customer</div></a>
+			</li>
+			<li>
+				<a href="../pages/supplier.html" class="active"><i class='bx bxs-truck icon' ></i><div class="sideMenuText">Supplier</div></a>
+			</li>
+			<li>
+				<a href="../pages/purchase_order.php"><i class='bx bxs-cart-alt icon' ></i> <div class="sideMenuText">Purchase Order</div></a>
+			</li>
+			<li>
+				<a href="#"><i class='bx bxs-notepad icon' ></i><div class="sideMenuText">Products</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="../pages/products.html"><div class="sideMenuText">Product List</div></a></li>
+					<li><a href="../pages/category.html"><div class="sideMenuText">Category</div></a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="fa-solid fa-boxes-stacked icon"></i></i><div class="sideMenuText">Stocks & Price</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+				<li><a href="../pages/stocks.html"><div class="sideMenuText">Stock List</div></a></li>
+					<li><a href="../pages/price.html"><div class="sideMenuText">Price</div></a></li>
+
+				</ul>
+			</li>
+			<li class="divider" data-text="reports">REPORTS</li>
+			<li>
+				<a href="#"><i class='bx bxs-report icon' ></i><div class="sideMenuText">Report</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="#"><div class="sideMenuText">Transactions Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Sales Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Overall Inventory</div></a></li>
+				</ul>
+			</li>
+			
+		</ul>
+
+	    </section>
+	    <!-- SIDEBAR -->
+
+
+    <section id="content">
+
+        <!-- NAVBAR -->
+        <nav>
+         <i class='bx bx-menu toggle-sidebar' ></i>
+     
+         <span class="divider"></span>
+         <a href="../pages/pos-admin.php" class="nav-link">
+         <i class="fa-solid fa-shop icon"></i>
+         </a>
+         <a href="#" class="nav-link">
+             <i class='bx bxs-bell icon' ></i>
+             <span class="badge">5</span>
+         </a>
+         <a href="#" class="nav-link">
+             <i class='bx bxs-message-square-dots icon' ></i>
+             <span class="badge">8</span>
+         </a>
+         
+         <a href="../pages/settings.html" class="nav-link">
+         <i class="fa-solid fa-gear icon"></i>
+         </a>
+         <a href="../pages/accounts.html" class="nav-link">
+         <i class="fa-solid fa-users icon"></i>
+         </a>
+         <div class="profile"><div class="profileCon"><img src="../img/profile/hutao.jpg" alt="online">
+             <div class="usernameDis"><!--<?php 
+             //showing usertype
+             if (isset($_SESSION['user'])) {
+             echo "<h4>".$_SESSION['fname'] ." ".$_SESSION['lname']. "</h4>";}
+             ?>-->
+             </div>
+         </div>
+             <ul class="profile-link">
+                 <li><a href="../includes/logout.php"><i class='bx bxs-log-out-circle'></i>Logout</a></li>
+             </ul>
+         </div>
+         </nav>
+ 
+     <!-- NAVBAR -->
+
+
+		<!-- MAIN -->
+		<main>
+			<h1 class="title">Supplier's Information</h1>
+
+              <!-- TOAST -->
+			 <!-- THIS IS JUST A NOTIFICATION POPUP LIKE FOR EXAMPLE, "ADDED SUCCESSFULLY, UPDATED SUICCESSFULY"
+             <?php
+
+             if (isset($_SESSION['toast_message'], $_SESSION['me-auto'] )) {
+                 echo '<div id="toast" class="toast-container position-fixed bottom-0 end-0 p-3">
+                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                     <div class="toast-header">
+                         <strong class="me-auto">' . $_SESSION['me-auto'] . ' <i class="fa-regular fa-bell"></i></strong>
+                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                     </div>
+                     <div class="toast-body">
+                       '. $_SESSION['toast_message'] .'
+                     </div>
+                 </div>
+             </div>';             
+             }
+             
+             ?>
+             <script>
+                 // Show toast if message is set
+                 <?php if (isset($_SESSION['toast_message'], $_SESSION['me-auto'])): ?>
+                     var toast = document.getElementById('toast');
+                     toast.classList.add('fade-in');
+             
+                     setTimeout(function() {
+                         toast.classList.add('fade-out');
+                         setTimeout(function() {
+                             toast.style.display = 'none';
+                         }, 500);
+                     }, 5000);
+                     <?php // Remove the session variable
+                  unset($_SESSION['toast_message']);
+                  unset($_SESSION['me-auto']);
+                  ?>
+                 <?php endif;    ?>
+             </script>
+
+            TOAST -->
+            <!-- TOAST -->
+
+		<!--TABLE-->
+ 
+		<div class="table" id="suppliers_table">
+        <div class="table-includes">
+        <section class="table_header">
+            <h1>Supplier's Datatable</h1>
+            <div class="input-group">
+                <input type="search" placeholder="Search Data...">
+                <img src="../img/icon/search.png" alt="">
+            </div>
+           <!-- <div class="export_file">
+                <label for="export-file" class="export_file-btn" title="Export File"></label>
+                <input type="checkbox" id="export-file">
+                <div class="export_file-options">
+                    <label>Export As &nbsp; &#10140;</label>
+                    <label for="export-file" id="toPDF">PDF <img src="img/pdf.png" alt=""></label>
+                    <label for="export-file" id="toJSON">JSON <img src="img/json.png" alt=""></label>
+                </div>
+            </div>-->
+        </section>
+		
+		<div class="pagination-add">
+
+                <!-- Button trigger modal-->
+			<button  data-modal-target="crud-modal" class="add-btn" data-modal-toggle="crud-modal" data-action="add"><span class="btn-text">Add supplier</span><i class='bx bxs-add-to-queue'></i></button> 
+
+            <div class="pag">
+			<label for="perPage">Entries per page:</label>
+			<select id="perPage" onchange="updateItemsPerPage()">
+			<option value="10">10</option>
+			<option value="30" selected>30</option>
+			<option value="60">60</option>
+            <option value="80">80</option>
+            <option value="100">100</option>
+    	</select>
+		<button id="prevBtn" class="nxt-prv">Previous</button>
+		<button id="nextBtn" class="nxt-prv">Next</button>
+        <div id="paginationInfo" class="pagination-info"></div>
+  	    </div>
+    </div>
+</div>
+<!--
+        <?php
+
+        // prepare the SQL statement with a WHERE clause to filter by archive column
+        $stmt = $connection->prepare("SELECT suppID, suppName, suppAddress, suppContact, supp_created FROM suppliertb WHERE archive = 0 AND branchID = 1");
+
+        // execute the SQL statement
+        $stmt->execute();
+
+        // bind the result variables
+        $stmt->bind_result($suppID, $suppName, $suppAddress, $suppContact, $supp_created);
+
+        // fetch the data
+        $suppliers = array();
+        while ($stmt->fetch()) {
+            $suppliers[] = array(
+                'suppID' => $suppID,
+                'suppName' => htmlspecialchars($suppName),
+                'suppAddress' => htmlspecialchars($suppAddress),
+				'suppContact' => $suppContact,
+                'supp_created' => date('m-d-Y H:i:s', strtotime($supp_created))
+            );
+        }
+
+        // close the prepared statement
+        $stmt->close();
+
+        ?>
+        -->
+
+        <section id= "table-supplier" class="table_body">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="main_th"> ID <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Supplier Name <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Address <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Contact <span class="icon-arrow">&UpArrow;</span></th>
+						<th class="main_th"> Date Added <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php
+
+                    foreach ($suppliers as $supplier){
+                    echo "<tr data-supplier-id='". $supplier['suppID']."'>";
+                    echo "<td>" .$supplier['suppID']. "</td>";
+                    echo "<td>" .$supplier['suppName']. "</td>";
+                    echo "<td>" .$supplier['suppAddress']. "</td>";
+					echo "<td>" .$supplier['suppContact']. "</td>";
+                    echo "<td>" . $supplier['supp_created'] . "</td>";
+                    echo "<td class='actionBtn'>
+                    <button type='button' class='edit-btn' data-suppID='" . $supplier['suppID'] . "' data-suppName='" . $supplier['suppName'] . "' data-suppAddress='" . $supplier['suppAddress'] ."' data-suppContact='" . $supplier['suppContact'] . "' data-cuscreated='" . $supplier['supp_created'] . "'><i class='fas fa-edit'></i><span>Edit</span></button>
+                    <button type='button' class='btn-archive' data-id-type='supplier' data-id-value='" . $supplier['suppID'] . "'><i class='fa-solid fa-box-archive'></i><span>Archive</span></button>
+                        </td>";
+                    echo "</tr>";
+                    }
+
+                    ?>
+
+                </tbody>
+            </table>  
+    </section>
+</div>
+    <div id="noResultsMessage" class="hidden"><span class="noResultmsg">No results found :c </span></div>
+        <!--TABLE-->
+
+       
+        <!-- MAIN MODAL -->
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="modal-crud hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+
+        <!-- MODAL CONTENT -->
+        <div class="modal-content relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+            <!-- MODAL HEADER -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Add New Supplier
+                </h3>
+                <button type="button" class="close-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- MODAL HEADER -->
+
+                <!--To display the next ID from the table
+                    <?php 
+                        // Query the database to find the maximum value of the suppID column
+                        $sqlMaxID = "SELECT MAX(suppID) AS max_suppID FROM suppliertb";
+                        $resultMaxID = mysqli_query($connection, $sqlMaxID);
+
+                        // Fetch the result of the query into a variable
+                        $rowsupplier = mysqli_fetch_assoc($resultMaxID);
+
+                        // Get the maximum value of the suppID column and add 1 to it to get the next ID
+                        $nextsuppID = $rowsupplier['max_suppID'] + 1;
+
+                    ?>
+                    -->
+
+            <!-- MODAL BODY -->
+            <form class="p-4 md:p-5" id="add-supplier" action="../crud_php/addSupplier.php" method="post" onsubmit="return confirm('Are you sure you want to save this data?')">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2 sm:col-span-1">
+                        <label for="suppIDAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier ID</label>
+                        <input type="number" name="suppID" id="suppIDAdd" class="disabledbg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        readonly ><!--<?php echo "value=$nextsuppID"; ?>-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="suppNameAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name *</label>
+                        <input type="text" name="suppName" id="suppNameAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        placeholder="Type supplier name" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="suppAddressAdd"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address * </label>
+                        <input type="text" name="suppAddress" id="suppAddressAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        placeholder="e.g. Morong, Rizal" required="">
+                    </div>
+					<div class="col-span-2">
+                        <label for="suppContactAdd"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact * </label><div class="con">
+                       <span class="text-sm font-medium text-gray-900 dark:text-white">(+63)</span> <input type="tel" name="suppContact" id="suppContactAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        placeholder="9xxxxxxxxx" required="" pattern="[0-9]{10}"></div><span class="text-sm font-medium text-gray-900 dark:text-white">(Format 10 digits: 9xxxxxxxxx)</span>
+                    </div>
+
+                </div>
+                <button type="submit" class="submit text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                    Add new supplier
+                </button>
+            </form>
+             <!-- MODAL BODY -->
+        </div>
+        <!-- MODAL CONTENT -->
+    </div>
+</div> 
+<!-- MAIN MODAL -->
+
+
+
+
+<!-- UPDATE MAIN MODAL -->
+<div id="updateRecords" tabindex="-1" aria-hidden="true" class="modal-crud hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+
+        <!-- MODAL CONTENT -->
+        <div class="modal-content relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+            <!-- MODAL HEADER -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Update supplier's Information
+                </h3>
+                <button type="button" class="close-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- MODAL HEADER -->
+       
+            <!-- MODAL BODY -->
+            <form class="p-4 md:p-5" id="update-supplier" action="../crud_php/updateSupplier.php" method="post" onsubmit="return confirmSubmit('Are you sure you want to update the data?')">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2 sm:col-span-1">
+                        <label for="suppIDUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Supplier ID</label>
+                        <input type="number" name="suppID" id="suppIDUpdate" class="border disabledbg border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        readonly><!-- value="<?php echo $supplier['suppID'];" ?>-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="suppNameUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name *</label>
+                        <input type="text" name="suppName" id="suppNameUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                         required=""><!--value="<?php echo $supplier['suppName']; ?>"--> 
+                    </div>
+                    <div class="col-span-2">
+                        <label for="suppAddressUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address *</label>
+                        <input type="text" name="suppAddress" id="suppAddressUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                         required="" ><!--value="<?php echo $supplier['suppAddress']; ?>"-->
+                    </div>
+					<div class="col-span-2">
+                        <label for="suppContactUpdate"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Contact * </label><div class="con">
+                       <span class="text-sm font-medium text-gray-900 dark:text-white">(+63)</span>
+                        <input type="tel" name="suppContact" id="suppContactUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        required="" pattern="[0-9]{10}"></div><span class="text-sm font-medium text-gray-900 dark:text-white">(Format 10 digits: 9xxxxxxxxx)</span>
+                    </div><!--value="<?php echo $supplier['suppContact']; ?>" -->
+                    <div class="col-span-2">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Added</label>
+                        <input type="text" name="supp_created" id="supp_createdUpdate" class="border disabledbg border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        readonly><!-- value="<?php echo $supplier['supp_created'] ?>" -->
+                    </div>
+
+                </div>
+                <button type="submit" class="submit text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                    Save Changes
+                </button>
+            </form>
+             <!-- MODAL BODY -->
+        </div>
+        <!-- MODAL CONTENT -->
+    </div>
+</div> 
+<!-- UPDATE MAIN MODAL -->
+
+</main>
+		<!-- MAIN -->
+
+	<!--edit and archve records-->
+<script>
+    //supplier-edit
+function editSupplier(suppID, suppName, suppAddress, suppContact, supp_created) {
+    // Set the values of the input fields in the update modal with the supplier data
+    document.getElementById("suppIDUpdate").value = suppID;
+    document.getElementById("suppNameUpdate").value =  suppName;
+    document.getElementById("suppAddressUpdate").value = suppAddress;
+    document.getElementById("suppContactUpdate").value =  suppContact;
+    document.getElementById("supp_createdUpdate").value = supp_created;
+
+}
+
+document.querySelectorAll(".edit-btn").forEach(function(button) {
+    button.addEventListener("click", function() {
+        var suppID = this.getAttribute("data-suppID");
+        var suppName = this.getAttribute("data-suppName");
+        var suppAddress = this.getAttribute("data-suppAddress");
+        var suppContact = this.getAttribute("data-suppContact");
+        var supp_created = this.getAttribute("data-cuscreated");
+
+        editSupplier(suppID, suppName, suppAddress, suppContact, supp_created);
+    });
+});
+
+//arcvhing records
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all archive buttons
+    var archiveButtons = document.querySelectorAll('.btn-archive');
+
+    // Attach a click event listener to each archive button
+    archiveButtons.forEach(function(archiveButton) {
+        archiveButton.addEventListener('click', function() {
+            // Get the suppID from the data-id-value attribute
+            var suppID = this.getAttribute('data-id-value');
+
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to archive this data?')) {
+                // Send an AJAX request to archiveRecords.php
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '../crud_php/archiveSupplier.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                         // Get the current page's URL
+                    var currentPageURL = window.location.href;
+
+                    // Redirect the user to the current page
+                    window.location.href = currentPageURL;
+                    
+                    } else if (xhr.readyState == 4) {
+                        // An error occurred while archiving the supplier
+                        alert('Error: ' + xhr.responseText);
+                    }
+                };
+                xhr.send('suppID=' + encodeURIComponent(suppID));
+            } else {
+                // User cancelled the action
+                
+            }
+        });
+    });
+});
+
+
+</script>
+
+<!--edit and archve records-->
+    <script src="../js/table.js"></script>
+	<script src="../js/toggle.js"></script>
+    <script src="../js/modal.js"></script>
+
+
+
+</body>
+</html>
+
+
+
+
+

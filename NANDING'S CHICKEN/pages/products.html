@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/system.css">
+	<link rel="stylesheet" href="../css/datatables.css">
+    <link rel="stylesheet" href="../css/modal.css">
+
+
+    <script src="https://kit.fontawesome.com/6b1ea01380.js" crossorigin="anonymous"></script>
+
+
+
+
+	<title>Product |<!-- <?php echo $row['system_title']; ?>--></title>
+</head>
+<body>
+    
+	
+	<section id="sidebar">
+		<a href="../pages/dashboard.html" class="logo"> 
+		<img src='../img/logo/logo.png' alt=''>  
+
+		<h4>Sales and Inventory Management System</h4></a>
+		<ul class="side-menu">
+			<li class="divider" data-text="home">HOME</li>
+			<li><a href="../pages/dashboard.html" ><i class='bx bxs-dashboard icon' ></i><div class="sideMenuText">Dashboard</div></a></li>
+			<li class="divider" data-text="main">Main</li>
+			<li>
+				<a href="../pages/customer.html" ><i class='bx bxs-face icon'></i><div class="sideMenuText">Customer</div></a>
+			</li>
+			<li>
+				<a href="../pages/supplier.html"><i class='bx bxs-truck icon' ></i><div class="sideMenuText">Supplier</div></a>
+			</li>
+			<li>
+				<a href="../pages/purchase_order.php"><i class='bx bxs-cart-alt icon' ></i> <div class="sideMenuText">Purchase Order</div></a>
+			</li>
+			<li>
+				<a class="active"><i class='bx bxs-notepad icon' ></i><div class="sideMenuText">Products</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown show">
+					<li><a href="../pages/products.html"><div class="sideMenuText">Product List</div></a></li>
+					<li><a href="../pages/category.html"><div class="sideMenuText">Category</div></a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="fa-solid fa-boxes-stacked icon"></i></i><div class="sideMenuText">Stocks & Price</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+				<li><a href="../pages/stocks.html"><div class="sideMenuText">Stock List</div></a></li>
+					<li><a href="../pages/price.html"><div class="sideMenuText">Price</div></a></li>
+
+				</ul>
+			</li>
+			<li class="divider" data-text="reports">REPORTS</li>
+			<li>
+				<a href="#"><i class='bx bxs-report icon' ></i><div class="sideMenuText">Report</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="#"><div class="sideMenuText">Transactions Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Sales Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Overall Inventory</div></a></li>
+				</ul>
+			</li>
+			
+		</ul>
+
+	    </section>
+	    <!-- SIDEBAR -->
+
+<section id="content">
+
+    <!-- NAVBAR -->
+    <nav>
+     <i class='bx bx-menu toggle-sidebar' ></i>
+ 
+     <span class="divider"></span>
+     <a href="../pages/pos-admin.php" class="nav-link">
+     <i class="fa-solid fa-shop icon"></i>
+     </a>
+     <a href="#" class="nav-link">
+         <i class='bx bxs-bell icon' ></i>
+         <span class="badge">5</span>
+     </a>
+     <a href="#" class="nav-link">
+         <i class='bx bxs-message-square-dots icon' ></i>
+         <span class="badge">8</span>
+     </a>
+     
+     <a href="../pages/settings.html" class="nav-link">
+     <i class="fa-solid fa-gear icon"></i>
+     </a>
+     <a href="../pages/accounts.html" class="nav-link">
+     <i class="fa-solid fa-users icon"></i>
+     </a>
+     <div class="profile"><div class="profileCon"><img src="../img/profile/hutao.jpg" alt="online">
+         <div class="usernameDis"><!--<?php 
+         //showing usertype
+         if (isset($_SESSION['user'])) {
+         echo "<h4>".$_SESSION['fname'] ." ".$_SESSION['lname']. "</h4>";}
+         ?>-->
+         </div>
+     </div>
+         <ul class="profile-link">
+             <li><a href="../includes/logout.php"><i class='bx bxs-log-out-circle'></i>Logout</a></li>
+         </ul>
+     </div>
+     </nav>
+
+ <!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			<h1 class="title">Product Information</h1>
+
+            <!-- TOAST -->
+			 <!-- THIS IS JUST A NOTIFICATION POPUP LIKE FOR EXAMPLE, "ADDED SUCCESSFULLY, UPDATED SUICCESSFULY"
+             <?php
+
+             if (isset($_SESSION['toast_message'], $_SESSION['me-auto'] )) {
+                 echo '<div id="toast" class="toast-container position-fixed bottom-0 end-0 p-3">
+                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                     <div class="toast-header">
+                         <strong class="me-auto">' . $_SESSION['me-auto'] . ' <i class="fa-regular fa-bell"></i></strong>
+                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                     </div>
+                     <div class="toast-body">
+                       '. $_SESSION['toast_message'] .'
+                     </div>
+                 </div>
+             </div>';             
+             }
+             
+             ?>
+             <script>
+                 // Show toast if message is set
+                 <?php if (isset($_SESSION['toast_message'], $_SESSION['me-auto'])): ?>
+                     var toast = document.getElementById('toast');
+                     toast.classList.add('fade-in');
+             
+                     setTimeout(function() {
+                         toast.classList.add('fade-out');
+                         setTimeout(function() {
+                             toast.style.display = 'none';
+                         }, 500);
+                     }, 5000);
+                     <?php // Remove the session variable
+                  unset($_SESSION['toast_message']);
+                  unset($_SESSION['me-auto']);
+                  ?>
+                 <?php endif;    ?>
+             </script>
+
+            TOAST -->
+            <!-- TOAST -->
+        
+
+		<!--TABLE-->
+
+		<div class="table" id="products_table">
+        <div class="table-includes">
+        <section class="table_header">
+            <h1>Product Datatable</h1>
+            <div class="input-group">
+                <input type="search" placeholder="Search Data...">
+                <img src="../img/icon/search.png" alt="">
+            </div>
+           <!-- <div class="export_file">
+                <label for="export-file" class="export_file-btn" title="Export File"></label>
+                <input type="checkbox" id="export-file">
+                <div class="export_file-options">
+                    <label>Export As &nbsp; &#10140;</label>
+                    <label for="export-file" id="toPDF">PDF <img src="img/pdf.png" alt=""></label>
+                    <label for="export-file" id="toJSON">JSON <img src="img/json.png" alt=""></label>
+                </div>
+            </div>-->
+        </section>
+		
+		<div class="pagination-add">
+
+                <!-- Button trigger modal-->
+			<button  data-modal-target="crud-modal" class="add-btn" data-modal-toggle="crud-modal" data-action="add"><span class="btn-text">Add Product</span><i class='bx bxs-add-to-queue'></i></button> 
+           
+            <div class="pag">
+			<label for="perPage">Entries per page:</label>
+			<select id="perPage" onchange="updateItemsPerPage()">
+			<option value="10">10</option>
+			<option value="30" selected>30</option>
+			<option value="60">60</option>
+            <option value="80">80</option>
+            <option value="100">100</option>
+    	</select>
+		<button id="prevBtn" class="nxt-prv">Previous</button>
+		<button id="nextBtn" class="nxt-prv">Next</button>
+        <div id="paginationInfo" class="pagination-info"></div>
+  	    </div>
+    </div>
+</div>
+<!--
+        <?php
+
+        // prepare the SQL statement with a WHERE clause to filter by archive column
+        $prodstmt = $connection->prepare("SELECT 
+        producttb.prodID, 
+        producttb.prodName, 
+        producttb.prodDes,
+        producttb.prodImg, 
+        producttb.prod_created, 
+        categorytb.catName 
+    FROM 
+        producttb 
+    LEFT JOIN 
+        categorytb ON producttb.catID = categorytb.catID 
+    WHERE 
+        producttb.archive = 0");
+
+        // execute the SQL statement
+        $prodstmt->execute();
+
+        // bind the result variables
+        $prodstmt->bind_result($prodID, $prodName, $prodDes, $prodImg, $prod_created, $catName);
+
+        // fetch the data
+        $products = array();
+        while ($prodstmt->fetch()) {
+            $products[] = array(
+                'prodID' => $prodID,
+                'prodName' => htmlspecialchars($prodName),
+                'prodDes' => htmlspecialchars($prodDes),
+                'prodImg' => htmlspecialchars($prodImg),
+                'prod_created' => date('m-d-Y H:i:s', strtotime($prod_created)),
+                'catName' => $catName
+            );
+        }
+
+        // close the prepared statement
+        $prodstmt->close();
+
+        ?>
+        -->
+
+        <section id= "table-product" class="table_body">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="main_th"> Product ID <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Product <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Product Descriptions<span class="icon-arrow">&UpArrow;</span></th>   
+                        <th class="main_th"> Image</th>                    
+                        <th class="main_th"> Category <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="main_th"> Date Added <span class="icon-arrow">&UpArrow;</span></th>
+                        <th class="action">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php
+
+                    foreach ($products as $product){
+                    echo "<tr data-product-id='". $product['prodID']."'>";
+                    echo "<td>" .$product['prodID']. "</td>";
+                    echo "<td>" .$product['prodName']. "</td>";
+                    echo "<td>" .$product['prodDes']. "</td>";
+                    echo "<td> <img src='" . $product['prodImg'] . "'> </td>";
+                    echo "<td>" . $product['catName'] . "</td>";
+                    echo "<td>"  . $product['prod_created'] . "</td>";
+                    echo "<td class='actionBtn'>
+                    <button type='button' class='edit-btn' data-prodID='" . $product['prodID'] . "' data-prodName='" . $product['prodName'] . "' data-prodDes='" . $product['prodDes'] . "' data-prodImg='" . $product['prodImg'] . "' data-prod_created='" . $product['prod_created'] . "'data-catName='" . $product['catName'] . "'><i class='fas fa-edit'></i><span>Edit</span></button>
+
+                    <button type='button' class='btn-archive' data-id-type='product' data-id-value='" . $product['prodID'] . "'><i class='fa-solid fa-box-archive'></i><span>Archive</span></button>
+                        </td>";
+                    echo "</tr>";
+                    }
+
+                    ?>
+
+                </tbody>
+            </table>  
+    </section>
+</div>
+    <div id="noResultsMessage" class="hidden"><span class="noResultmsg">No results found :c </span></div>
+        <!--TABLE-->
+
+       
+        <!-- MAIN MODAL -->
+<div id="crud-modal" tabindex="-1" aria-hidden="true" class="modal-crud hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+
+        <!-- MODAL CONTENT -->
+        <div class="modal-content relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+            <!-- MODAL HEADER -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Add New product
+                </h3>
+                <button type="button" class="close-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- MODAL HEADER -->
+
+                <!--To display the next ID from the table
+                    <?php 
+                       
+                        $prodsqlMaxID = "SELECT MAX(prodID) AS max_prodID FROM producttb";
+                        $prodresultMaxID = mysqli_query($connection, $prodsqlMaxID);
+
+                        
+                        $rowproduct = mysqli_fetch_assoc($prodresultMaxID);
+
+                        
+                        $nextprodID = $rowproduct['max_prodID'] + 1;
+
+                    ?>
+                    -->
+            <!-- MODAL BODY -->
+            <form class="p-4 md:p-5" id="add-product" action="../crud_php/addProduct.php" method="post" enctype="multipart/form-data" onsubmit="return confirm('Are you sure you want to save this data?')">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2 sm:col-span-1">
+                        <label for="prodIDAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product ID</label>
+                        <input type="number" name="prodID" id="prodIDAdd" class="readonly-input disabledbg border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        ><!--<?php echo "value=$nextprodID"; ?>-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodNameAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product *</label>
+                        <input type="text" name="prodName" id="prodNameAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        placeholder="Type product name" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodDesAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Descriptions *</label>
+                        <input type="text" name="prodDes" id="prodDesAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        placeholder="Type product description" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodImgAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
+                        <input type="file" name="prodImg" id="prodImgAdd" accept="image/*" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+					</div>    
+                    <div class="col-span-2">
+                        <label for="catNameAdd" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category *</label>
+                        <select name="catName" id="catNameAdd" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                        <option value="">Select Category</option>
+                           <!--<?php
+                            
+                            $queryCategory = "SELECT catID, catName FROM categorytb WHERE archive = 0";
+                            $resultCategory  = mysqli_query($connection, $queryCategory);
+
+                            
+                            if ($resultCategory) {
+                                
+                                while ($rowCategory  = mysqli_fetch_assoc($resultCategory)) {
+                                    echo "<option value='{$rowCategory['catID']}'>{$rowCategory['catName']}</option>"; 
+                                }
+                            } else {
+                                echo "<option value=''>Error retrieving categories</option>";
+                            }
+                            ?>
+                            --> 
+                    </select>
+                    </div>
+
+                </div>
+                <button type="submit" class="submit text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                    Add new product
+                </button>
+            </form>
+             <!-- MODAL BODY -->
+        </div>
+        <!-- MODAL CONTENT -->
+    </div>
+</div> 
+<!-- MAIN MODAL -->
+
+
+
+
+<!-- UPDATE MAIN MODAL -->
+<div id="updateRecords" tabindex="-1" aria-hidden="true" class="modal-crud hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+
+        <!-- MODAL CONTENT -->
+        <div class="modal-content relative bg-white rounded-lg shadow dark:bg-gray-700">
+
+            <!-- MODAL HEADER -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Update product's Information
+                </h3>
+                <button type="button" class="close-btn text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- MODAL HEADER -->
+       
+            <!-- MODAL BODY -->
+            <form class="p-4 md:p-5" id="update-product" action="../crud_php/updateProd.php" method="post" enctype="multipart/form-data" onsubmit="return confirmSubmit('Are you sure you want to update the data?')">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                <div class="col-span-2 sm:col-span-1">
+                        <label for="prodIDUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product ID</label>
+                        <input type="number" name="prodID" id="prodIDUpdate" class=" readonly-input border disabledbg border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                        ><!--value="<?php echo $product['prodID']; ?>"-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodNameUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name *</label>
+                        <input type="text" name="prodName" id="prodNameUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                          required=""><!--value="<?php echo $product['prodName']; ?>"-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodDesUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Descriptions *</label>
+                        <input type="text" name="prodDes" id="prodDesUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                         required=""><!--value="<?php echo $product['prodDes']; ?>"-->
+                    </div>
+                    <div class="col-span-2">
+                        <label for="prodImgUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Image</label>
+                        <img id="prodImgDisplay" src="" alt="Product Image" class="w-full mb-2">
+   
+                        <input type="file" name="prodImg" id="prodImgUpdate" accept="image/*" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Added</label>
+                        <input type="text" name="prod_created" id="prod_createdUpdate" class="border disabledbg border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                          readonly><!--value="<?php echo $product['prod_created'] ?>"-->
+                    </div>
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="catNameUpdate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category *</label>
+                        <select name="catName" id="catNameUpdate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required="">
+                       <!-- <?php
+                            // Retrieve categories and render options
+                            $queryCategory = "SELECT catID, catName FROM categorytb WHERE archive = 0";
+                            $resultCategory  = mysqli_query($connection, $queryCategory);
+
+                            if ($resultCategory) {
+                                while ($rowCategory  = mysqli_fetch_assoc($resultCategory)) {
+                                    echo "<option value='{$rowCategory['catName']}'>{$rowCategory['catName']}</option>"; 
+                                }
+                            } else {
+                                echo "<option value=''>Error retrieving categories</option>";
+                            }
+                            ?>
+                            -->
+                    </select>
+                    </div>
+                </div>
+                <button type="submit" class="submit text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                    Save Changes
+                </button>
+            </form>
+             <!-- MODAL BODY -->
+        </div>
+        <!-- MODAL CONTENT -->
+    </div>
+</div> 
+<!-- UPDATE MAIN MODAL -->
+
+
+</main>
+		<!-- MAIN -->
+
+        
+
+
+<!--edit and archve records-->
+<script>
+
+    
+//product-edit
+function editProduct(prodID, prodName, prodDes, prodImg, prod_created, catName) {
+    console.log("prodImg:", prodImg); // for debugging
+
+    document.getElementById("prodIDUpdate").value = prodID;
+    document.getElementById("prodNameUpdate").value = prodName;
+    document.getElementById("prodDesUpdate").value = prodDes;
+    document.getElementById("prodImgDisplay").src = prodImg;
+    document.getElementById("prod_createdUpdate").value = prod_created;
+    document.getElementById("catNameUpdate").value = catName;
+
+}
+
+document.querySelectorAll(".edit-btn").forEach(function(button) {
+    button.addEventListener("click", function() {
+        var prodID = this.getAttribute("data-prodID");
+        var prodName = this.getAttribute("data-prodName");
+        var prodDes = this.getAttribute("data-prodDes");
+        var prodImg = this.getAttribute("data-prodImg");
+        var prod_created = this.getAttribute("data-prod_created");
+        var catName = this.getAttribute("data-catName");
+
+        editProduct(prodID, prodName, prodDes, prodImg, prod_created, catName);
+    });
+});
+
+//arcvhing records
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all archive buttons
+    var archiveButtons = document.querySelectorAll('.btn-archive');
+
+    // Attach a click event listener to each archive button
+    archiveButtons.forEach(function(archiveButton) {
+        archiveButton.addEventListener('click', function() {
+            // Get the prodID from the data-id-value attribute
+            var prodID = this.getAttribute('data-id-value');
+
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to archive this data?')) {
+                // Send an AJAX request to archiveRecords.php
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '../crud_php/archiveProd.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+
+                      // Get the current page's URL
+                    var currentPageURL = window.location.href;
+
+                    // Redirect the user to the current page
+                    window.location.href = currentPageURL;
+
+                    } else if (xhr.readyState == 4) {
+                        // An error occurred while archiving the product
+                        alert('Error: ' + xhr.responseText);
+                    }
+                };
+                xhr.send('prodID=' + encodeURIComponent(prodID));
+            } else {
+                // User cancelled the action can sshow a message
+                
+            }
+        });
+    });
+
+  
+});
+
+
+
+</script>
+
+
+<!--edit and archve records-->
+	
+    <script src="../js/table.js"></script>
+	<script src="../js/toggle.js"></script>
+    <script src="../js/modal.js"></script>
+
+
+    
+
+</body>
+</html>
+
+
+
+
+

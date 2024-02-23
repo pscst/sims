@@ -1,0 +1,195 @@
+<?php 
+
+	   include '../includes/connection.php';
+       include_once('../includes/session.php');
+	   include_once '../includes/system.php';
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="../css/dashboard.css">
+	<link rel="stylesheet" href="../css/system.css">
+    <link rel="stylesheet" href="../css/modal.css">
+
+
+
+	<script src="https://kit.fontawesome.com/6b1ea01380.js" crossorigin="anonymous"></script>
+	<title>Settings |<!-- <?php echo $row['system_title']; ?>--></title>
+</head>
+<body>
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a href="../pages/dashboard.html" class="logo"> 
+		<img src='../img/logo/logo.png' alt=''>  
+
+		<h4>Sales and Inventory Management System</h4></a>
+		<ul class="side-menu">
+			<li class="divider" data-text="home">HOME</li>
+			<li><a href="../pages/dashboard.html" ><i class='bx bxs-dashboard icon' ></i><div class="sideMenuText">Dashboard</div></a></li>
+			<li class="divider" data-text="main">Main</li>
+			<li>
+				<a href="../pages/customer.html"><i class='bx bxs-face icon'></i><div class="sideMenuText">Customer</div></a>
+			</li>
+			<li>
+				<a href="../pages/supplier.html"><i class='bx bxs-truck icon' ></i><div class="sideMenuText">Supplier</div></a>
+			</li>
+			<li>
+				<a href="../pages/purchase_order.php"><i class='bx bxs-cart-alt icon' ></i> <div class="sideMenuText">Purchase Order</div></a>
+			</li>
+			<li>
+				<a href="#"><i class='bx bxs-notepad icon' ></i><div class="sideMenuText">Products</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="../pages/products.html"><div class="sideMenuText">Product List</div></a></li>
+					<li><a href="../pages/category.html"><div class="sideMenuText">Category</div></a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="#"><i class="fa-solid fa-boxes-stacked icon"></i></i><div class="sideMenuText">Stocks & Price</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+				<li><a href="../pages/stocks.html"><div class="sideMenuText">Stock List</div></a></li>
+					<li><a href="../pages/price.html"><div class="sideMenuText">Price</div></a></li>
+
+				</ul>
+			</li>
+			<li class="divider" data-text="reports">REPORTS</li>
+			<li>
+				<a href="#"><i class='bx bxs-report icon' ></i><div class="sideMenuText">Report</div><i class='bx bx-chevron-right icon-right' ></i></a>
+				<ul class="side-dropdown">
+					<li><a href="#"><div class="sideMenuText">Transactions Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Sales Report</div></a></li>
+					<li><a href="#"><div class="sideMenuText">Overall Inventory</div></a></li>
+				</ul>
+			</li>
+			
+		</ul>
+
+	    </section>
+	    <!-- SIDEBAR -->
+
+        <section id="content">
+
+            <!-- NAVBAR -->
+            <nav>
+             <i class='bx bx-menu toggle-sidebar' ></i>
+         
+             <span class="divider"></span>
+             <a href="../pages/pos-admin.php" class="nav-link">
+             <i class="fa-solid fa-shop icon"></i>
+             </a>
+             <a href="#" class="nav-link">
+                 <i class='bx bxs-bell icon' ></i>
+                 <span class="badge">5</span>
+             </a>
+             <a href="#" class="nav-link">
+                 <i class='bx bxs-message-square-dots icon' ></i>
+                 <span class="badge">8</span>
+             </a>
+             
+             <a href="../pages/settings.html" class="nav-link">
+             <i class="fa-solid fa-gear icon"></i>
+             </a>
+             <a href="../pages/accounts.html" class="nav-link">
+             <i class="fa-solid fa-users icon"></i>
+             </a>
+             <div class="profile"><div class="profileCon"><img src="../img/profile/hutao.jpg" alt="online">
+                 <div class="usernameDis"><!--<?php 
+                 //showing usertype
+                 if (isset($_SESSION['user'])) {
+                 echo "<h4>".$_SESSION['fname'] ." ".$_SESSION['lname']. "</h4>";}
+                 ?>-->
+                 </div>
+             </div>
+                 <ul class="profile-link">
+                     <li><a href="../includes/logout.php"><i class='bx bxs-log-out-circle'></i>Logout</a></li>
+                 </ul>
+             </div>
+             </nav>
+     
+         <!-- NAVBAR -->
+
+		<!-- MAIN -->
+		<main>
+			  
+            <!-- TOAST -->
+			 <!-- THIS IS JUST A NOTIFICATION POPUP LIKE FOR EXAMPLE, "ADDED SUCCESSFULLY, UPDATED SUICCESSFULY"
+             <?php
+
+             if (isset($_SESSION['toast_message'], $_SESSION['me-auto'] )) {
+                 echo '<div id="toast" class="toast-container position-fixed bottom-0 end-0 p-3">
+                 <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                     <div class="toast-header">
+                         <strong class="me-auto">' . $_SESSION['me-auto'] . ' <i class="fa-regular fa-bell"></i></strong>
+                         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                     </div>
+                     <div class="toast-body">
+                       '. $_SESSION['toast_message'] .'
+                     </div>
+                 </div>
+             </div>';             
+             }
+             
+             ?>
+             <script>
+                 // Show toast if message is set
+                 <?php if (isset($_SESSION['toast_message'], $_SESSION['me-auto'])): ?>
+                     var toast = document.getElementById('toast');
+                     toast.classList.add('fade-in');
+             
+                     setTimeout(function() {
+                         toast.classList.add('fade-out');
+                         setTimeout(function() {
+                             toast.style.display = 'none';
+                         }, 500);
+                     }, 5000);
+                     <?php // Remove the session variable
+                  unset($_SESSION['toast_message']);
+                  unset($_SESSION['me-auto']);
+                  ?>
+                 <?php endif;    ?>
+             </script>
+
+            TOAST -->
+            <!-- TOAST -->
+
+    <div class="settingContainer">
+        <div class="settingHead">
+            <h3>System Settings</h3>
+
+            <form class="p-4 md:p-5" id="change-title" action="../includes/update-settings.php" method="post" enctype="multipart/form-data" onsubmit="return confirm('Are you sure you want to save these changes?')">
+                <div class="grid gap-4 mb-4">
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="systemtitle" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">System Title</label>
+                        <input type="text" name="systemtitle" id="systemtitle" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type system title here">
+						<span class="text-sm font-medium text-gray-900 dark:text-white">If you will not change the title, you may leave this field empty.</span>
+					</div>
+
+                    <div class="col-span-2 sm:col-span-1">
+                        <label for="systemlogo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">System Logo</label>
+                        <input type="file" name="systemlogo" id="systemlogo" accept="image/*" class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+						<span class="text-sm font-medium text-gray-900 dark:text-white">File dimension must be 500 by 500 pixels</span>
+					</div>    
+				</div>
+					<button type="submit" class="mtop submit text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+					name="submit">
+                        Save Settings
+                    </button>         
+            </form>	
+        </div>
+    </div>
+</main>
+		<!-- MAIN -->
+	</section>
+	<!-- NAVBAR -->
+
+	<!--<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>-->
+	<script src="https://cdn.plot.ly/plotly-2.27.0.min.js" charset="utf-8"></script>
+	<script src="../js/toggle.js"></script>
+	<script src="../js/graph.js"></script>
+</body>
+</html>
